@@ -1,0 +1,35 @@
+docker login
+
+docker build -t DEIN_BENUTZERNAME/IMAGE_NAME:TAG .
+
+
+docker build -t twischi/owserver_ds9490r:latest .
+
+
+docker push DEIN_BENUTZERNAME/IMAGE_NAME:TAG
+
+
+docker build -t twischi/owserver:latest .
+
+docker push twischi/owserver:latest
+
+# Log in
+#--------
+docker login
+
+# Prepare for mulit-Architeture
+#------------------------------
+docker buildx create --use
+docker buildx inspect --bootstrap
+
+# Build & push
+#-------------
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t twischi/owserver:latest \
+  -f dockerfile \
+  --push .
+
+# Short-Text:
+#-------------
+Getting values from 1wire-devices using OWSERVER eg. with USB DS9490R to 1-Wire Adapter 
